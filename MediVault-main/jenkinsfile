@@ -1,0 +1,36 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('Clone Repository') {
+            steps {
+                git branch: 'main', url: 'https://github.com/amsaluzair/university-projects.git'
+            }
+        }
+
+        stage('Build') {
+            steps {
+                sh 'g++ -o my_program main.cpp' // Replace `main.cpp` with your entry file
+            }
+        }
+
+        stage('Run Tests') {
+            steps {
+                sh './my_program'  // Adjust if you have a test suite
+            }
+        }
+
+        stage('Deploy') {
+            steps {
+                echo 'Deploying C++ application...'
+                sh 'mv my_program /usr/local/bin/' // Modify as needed
+            }
+        }
+    }
+
+    post {
+        success {
+            echo 'Build and deployment successful!'
+        }
+    }
+}

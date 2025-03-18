@@ -1,0 +1,38 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('Clone Repository') {
+            steps {
+                git branch: 'main', url: 'https://github.com/amsaluzair/university-projects.git'
+            }
+        }
+
+        stage('Setup Environment') {
+            steps {
+                sh 'python3 -m venv venv'
+                sh 'source venv/bin/activate'
+                
+            }
+        }
+
+        stage('Run Tests') {
+            steps {
+                sh 'source venv/bin/activate && pytest tests/'  // Change according to your test folder
+            }
+        }
+
+        stage('Deploy') {
+            steps {
+                echo 'Deploying the Python application...'
+                // Add deployment commands like running the Flask/Django app
+            }
+        }
+    }
+
+    post {
+        always {
+            sh 'deactivate'
+        }
+    }
+}
